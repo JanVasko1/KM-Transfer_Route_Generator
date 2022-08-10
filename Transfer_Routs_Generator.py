@@ -44,9 +44,9 @@ if NUS_Version == "NUS2":
         server = 'kmnus2prddbs01.erp.kme.intern'
 elif NUS_Version == "NUS3":
     if Data_System == "QA":
-        server = 'kmnavqdbs02.bs.kme.intern'
+        server = 'kmnavqdbs03.bs.kme.intern'
     else:
-        server = 'kmnavpdbs02.bs.kme.intern'
+        server = 'kmnavpdbs03.bs.kme.intern'
 else:
     print("No NUS Version selected")
     exit
@@ -169,145 +169,116 @@ for Location_first in Location_list_all:
     for Location_second in Location_list_all:
         Location_first = str(Location_first).rstrip("\n")
         Location_second = str(Location_second).rstrip("\n")
-        # Data Format
-        print("Transfer From; Transfer To; In-Transit; ")
-        if (Location_first in Empty) and (Location_second in Empty):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Empty) and (Location_second in Consignment_Stock):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Empty) and (Location_second in Technician):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Empty) and (Location_second in Sub):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Empty) and (Location_second in Main):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Empty) and (Location_second in On_Board):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Empty) and (Location_second in In_Transit):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Empty) and (Location_second in Returned_Machines):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        
-        elif (Location_first in Consignment_Stock) and (Location_second in Empty):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Consignment_Stock) and (Location_second in Consignment_Stock):
+        if (Location_first == Location_second) or (Location_first in In_Transit) or (Location_second in In_Transit):
             continue
-        elif (Location_first in Consignment_Stock) and (Location_second in Technician):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Consignment_Stock) and (Location_second in Sub):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Consignment_Stock) and (Location_second in Main):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Consignment_Stock) and (Location_second in On_Board):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Consignment_Stock) and (Location_second in In_Transit):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Consignment_Stock) and (Location_second in Returned_Machines):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-
-        elif (Location_first in Technician) and (Location_second in Empty):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Technician) and (Location_second in Consignment_Stock):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Technician) and (Location_second in Technician):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Technician) and (Location_second in Sub):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Technician) and (Location_second in Main):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Technician) and (Location_second in On_Board):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Technician) and (Location_second in In_Transit):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Technician) and (Location_second in Returned_Machines):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-
-        elif (Location_first in Sub) and (Location_second in Empty):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Sub) and (Location_second in Consignment_Stock):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Sub) and (Location_second in Technician):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Sub) and (Location_second in Sub):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Sub) and (Location_second in Main):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Sub) and (Location_second in On_Board):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Sub) and (Location_second in In_Transit):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Sub) and (Location_second in Returned_Machines):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-
-        elif (Location_first in Main) and (Location_second in Empty):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Main) and (Location_second in Consignment_Stock):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Main) and (Location_second in Technician):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Main) and (Location_second in Sub):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Main) and (Location_second in Main):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Main) and (Location_second in On_Board):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Main) and (Location_second in In_Transit):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Main) and (Location_second in Returned_Machines):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-
-        elif (Location_first in On_Board) and (Location_second in Empty):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in On_Board) and (Location_second in Consignment_Stock):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in On_Board) and (Location_second in Technician):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in On_Board) and (Location_second in Sub):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in On_Board) and (Location_second in Main):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in On_Board) and (Location_second in On_Board):
-            continue
-        elif (Location_first in On_Board) and (Location_second in In_Transit):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in On_Board) and (Location_second in Returned_Machines):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-
-        elif (Location_first in In_Transit) and (Location_second in Empty):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in In_Transit) and (Location_second in Consignment_Stock):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in In_Transit) and (Location_second in Technician):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in In_Transit) and (Location_second in Sub):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in In_Transit) and (Location_second in Main):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in In_Transit) and (Location_second in On_Board):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in In_Transit) and (Location_second in In_Transit):
-            continue
-        elif (Location_first in In_Transit) and (Location_second in Returned_Machines):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-
-        elif (Location_first in Returned_Machines) and (Location_second in Empty):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Returned_Machines) and (Location_second in Consignment_Stock):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Returned_Machines) and (Location_second in Technician):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Returned_Machines) and (Location_second in Sub):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Returned_Machines) and (Location_second in Main):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Returned_Machines) and (Location_second in On_Board):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Returned_Machines) and (Location_second in In_Transit):
-            result = str(Location_first+";"+Location_second+";;;;\n")
-        elif (Location_first in Returned_Machines) and (Location_second in Returned_Machines):
-            result = str(Location_first+";"+Location_second+";;;;\n")
         else:
-            result = str(Location_first+";"+Location_second+";TRANSFER\n")
-        output.write(result)
+            # Data Format
+            if (Location_first in Empty) and (Location_second in Empty):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Empty) and (Location_second in Consignment_Stock):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Empty) and (Location_second in Technician):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Empty) and (Location_second in Sub):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Empty) and (Location_second in Main):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Empty) and (Location_second in On_Board):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Empty) and (Location_second in Returned_Machines):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            
+            elif (Location_first in Consignment_Stock) and (Location_second in Empty):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Consignment_Stock) and (Location_second in Consignment_Stock):
+                continue
+            elif (Location_first in Consignment_Stock) and (Location_second in Technician):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Consignment_Stock) and (Location_second in Sub):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Consignment_Stock) and (Location_second in Main):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Consignment_Stock) and (Location_second in On_Board):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Consignment_Stock) and (Location_second in Returned_Machines):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+
+            elif (Location_first in Technician) and (Location_second in Empty):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Technician) and (Location_second in Consignment_Stock):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Technician) and (Location_second in Technician):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Technician) and (Location_second in Sub):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Technician) and (Location_second in Main):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Technician) and (Location_second in On_Board):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Technician) and (Location_second in Returned_Machines):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+
+            elif (Location_first in Sub) and (Location_second in Empty):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Sub) and (Location_second in Consignment_Stock):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Sub) and (Location_second in Technician):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Sub) and (Location_second in Sub):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Sub) and (Location_second in Main):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Sub) and (Location_second in On_Board):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Sub) and (Location_second in Returned_Machines):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+
+            elif (Location_first in Main) and (Location_second in Empty):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Main) and (Location_second in Consignment_Stock):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Main) and (Location_second in Technician):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Main) and (Location_second in Sub):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Main) and (Location_second in Main):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Main) and (Location_second in On_Board):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Main) and (Location_second in Returned_Machines):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+
+            elif (Location_first in On_Board) and (Location_second in Empty):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in On_Board) and (Location_second in Consignment_Stock):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in On_Board) and (Location_second in Technician):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in On_Board) and (Location_second in Sub):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in On_Board) and (Location_second in Main):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in On_Board) and (Location_second in On_Board):
+                continue
+            elif (Location_first in On_Board) and (Location_second in Returned_Machines):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+
+            elif (Location_first in Returned_Machines) and (Location_second in Empty):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Returned_Machines) and (Location_second in Consignment_Stock):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Returned_Machines) and (Location_second in Technician):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Returned_Machines) and (Location_second in Sub):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Returned_Machines) and (Location_second in Main):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Returned_Machines) and (Location_second in On_Board):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            elif (Location_first in Returned_Machines) and (Location_second in Returned_Machines):
+                result = str(Location_first+";"+Location_second+";;;;\n")
+            else:
+                result = str(Location_first+";"+Location_second+";TRANSFER\n")
+            output.write(result)
 
 output.close()
