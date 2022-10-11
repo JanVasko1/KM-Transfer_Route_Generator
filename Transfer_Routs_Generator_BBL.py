@@ -14,10 +14,13 @@ def Location_Country(Location_first, Location_second, Location_df, In_Transit_Co
     Location_second_Country_Series = Location_df[(Location_df["Location"] == Location_second)]
     Location_second_Country = Location_second_Country_Series.iloc[0]["Country"]
 
-    if Location_first_Country == Location_second_Country:
+    if Location_first_Country == "" or Location_second_Country == "":
         result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;;;;;\n")
     else:
-        result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
+        if Location_first_Country == Location_second_Country:
+            result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;;;;;\n")
+        else:
+            result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
     return str(result)
 
 #--------------------------------------------------------------------Downloader--------------------------------------------------------------------#
