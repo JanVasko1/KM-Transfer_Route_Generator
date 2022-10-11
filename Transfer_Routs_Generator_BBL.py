@@ -1,6 +1,5 @@
 import pandas
 import pyodbc
-import os
 
 def update_string(inset_value):
     try:
@@ -9,9 +8,17 @@ def update_string(inset_value):
     except:
         return inset_value
 
-File_path = os.path.dirname(os.path.abspath(__file__))
-output = open(f"{File_path}/Transfer_Rout_result", "wt", encoding="utf-8", errors='ignore')  
+def Location_Country(Location_first, Location_second, Location_df, In_Transit_Code):
+    Location_first_Country_Series = Location_df[(Location_df["Location"] == Location_first)]
+    Location_first_Country = Location_first_Country_Series.iloc[0]["Country"]
+    Location_second_Country_Series = Location_df[(Location_df["Location"] == Location_second)]
+    Location_second_Country = Location_second_Country_Series.iloc[0]["Country"]
 
+    if Location_first_Country == Location_second_Country:
+        result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;;;;;\n")
+    else:
+        result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
+    return str(result)
 
 #--------------------------------------------------------------------Downloader--------------------------------------------------------------------#
 Data_NOC = "BBL"
@@ -78,7 +85,6 @@ Location_dict = {
     "Type": Location_Type_all,
     "Country": Location_Country_all}
 Location_df = pandas.DataFrame(data=Location_dict, columns=Location_dict.keys())
-print(Location_df)
 # Location Types:
 # NUS3
 """
@@ -142,6 +148,8 @@ elif NUS_Version == "NUS2":
 else:
     pass
 
+output = open(f"./Transfer_Rout_result_{update_string(Company)}", "wt", encoding="utf-8", errors='ignore')  
+
 # Combine all types together
 for Location_first in Location_list_all:
     for Location_second in Location_list_all:
@@ -163,111 +171,139 @@ for Location_first in Location_list_all:
             else:
                 In_Transit_Code = ""
 
-            # Data Format
+            # Trasnfer-From, Transfer-To, In-Transit code, Shipping Agent Code, Shipping Agent Service, Shipment Method, Transaction Type, Tans. Specification, Transport Method, Area
+            # Empty
             if (Location_first in Empty) and (Location_second in Empty):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Empty) and (Location_second in Consignment_Stock):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Empty) and (Location_second in Technician):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Empty) and (Location_second in Sub):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                if Location_second == "5RDD" or Location_second == "5TDD":
+                    result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
+                else:
+                    result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Empty) and (Location_second in Main):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Empty) and (Location_second in On_Board):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Empty) and (Location_second in Returned_Machines):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             
+            # Consignemtn Stock
             elif (Location_first in Consignment_Stock) and (Location_second in Empty):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Consignment_Stock) and (Location_second in Consignment_Stock):
                 continue
             elif (Location_first in Consignment_Stock) and (Location_second in Technician):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Consignment_Stock) and (Location_second in Sub):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                if Location_second == "5RDD" or Location_second == "5TDD":
+                    result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
+                else:
+                    result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Consignment_Stock) and (Location_second in Main):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Consignment_Stock) and (Location_second in On_Board):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Consignment_Stock) and (Location_second in Returned_Machines):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
 
+            # Technician
             elif (Location_first in Technician) and (Location_second in Empty):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Technician) and (Location_second in Consignment_Stock):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Technician) and (Location_second in Technician):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";OWN;PICKUP;;;;;\n")
             elif (Location_first in Technician) and (Location_second in Sub):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                if Location_second == "5RDD" or Location_second == "5TDD":
+                    result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
+                else:
+                    result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";OWN;PUTIN;;;;;\n")
             elif (Location_first in Technician) and (Location_second in Main):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";OWN;PUTIN;;;;;\n")
             elif (Location_first in Technician) and (Location_second in On_Board):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Technician) and (Location_second in Returned_Machines):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
 
+            # Sub
             elif (Location_first in Sub) and (Location_second in Empty):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Sub) and (Location_second in Consignment_Stock):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Sub) and (Location_second in Technician):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";OWN;PICKUP;;;;;\n")
             elif (Location_first in Sub) and (Location_second in Sub):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                if Location_second == "5RDD" or Location_second == "5TDD":
+                    result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
+                else:
+                    result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Sub) and (Location_second in Main):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Sub) and (Location_second in On_Board):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Sub) and (Location_second in Returned_Machines):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
 
+            # Main
             elif (Location_first in Main) and (Location_second in Empty):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Main) and (Location_second in Consignment_Stock):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Main) and (Location_second in Technician):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";VENIPAK;STANDARD;;;;;\n")
             elif (Location_first in Main) and (Location_second in Sub):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                if Location_second == "5RDD" or Location_second == "5TDD":
+                    result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
+                else:
+                    result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";VENIPAK;STANDARD;;;;;\n")
             elif (Location_first in Main) and (Location_second in Main):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Main) and (Location_second in On_Board):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Main) and (Location_second in Returned_Machines):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
 
+            # OnBoard
             elif (Location_first in On_Board) and (Location_second in Empty):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in On_Board) and (Location_second in Consignment_Stock):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in On_Board) and (Location_second in Technician):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in On_Board) and (Location_second in Sub):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                if Location_second == "5RDD" or Location_second == "5TDD":
+                    result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
+                else:
+                    result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in On_Board) and (Location_second in Main):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in On_Board) and (Location_second in On_Board):
                 continue
             elif (Location_first in On_Board) and (Location_second in Returned_Machines):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
 
+            # Return Machine
             elif (Location_first in Returned_Machines) and (Location_second in Empty):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Returned_Machines) and (Location_second in Consignment_Stock):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Returned_Machines) and (Location_second in Technician):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Returned_Machines) and (Location_second in Sub):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                if Location_second == "5RDD" or Location_second == "5TDD":
+                    result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
+                else:
+                    result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Returned_Machines) and (Location_second in Main):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Returned_Machines) and (Location_second in On_Board):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in Returned_Machines) and (Location_second in Returned_Machines):
-                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;\n")
+                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             else:
                 result = str(Location_first+";"+Location_second+";TRANSFER\n")
             output.write(result)

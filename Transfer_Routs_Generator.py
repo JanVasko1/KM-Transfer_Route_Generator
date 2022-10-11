@@ -16,7 +16,7 @@ output = open(f"{File_path}/Transfer_Rout_result", "wt", encoding="utf-8", error
 #--------------------------------------------------------------------Downloader--------------------------------------------------------------------#
 # Data downloaded from DB
 NUS2_NOC_list = ["NAV2009", "BBG", "BBL", "BCZ", "BFI", "BGR", "BHN", "BNO", "BPT", "BRO", "BSK", "BSW", "BTR", "BUR"]
-NUS3_NOC_list = ["COREQA", "BDK", "BPL", "BHR", "BSL", "BIH", "BRS", "BR"]
+NUS3_NOC_list = ["COREQA", "BBL", "BDK", "BPL", "BHR", "BSL", "BIH", "BRS", "BR"]
 
 NUS_Version = ""
 while NUS_Version != "NUS2" and NUS_Version != "NUS3":
