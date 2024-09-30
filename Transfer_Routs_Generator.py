@@ -102,6 +102,17 @@ for location in Location_list:
     Location_list_all.append(location[0])
 Location_list_all = list(set(Location_list_all))
 # Location Types:
+# NUS Cloud
+"""
+0 - Empty
+1 - Consignment Stock
+2 - Technician
+3 - Sub
+4 - Main 
+5 - On Board 
+6 - In Transit
+7 - Returned Machines
+"""
 # NUS3
 """
 0 - Empty

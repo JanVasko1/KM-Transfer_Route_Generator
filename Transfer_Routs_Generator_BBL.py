@@ -272,22 +272,22 @@ for Location_first in Location_list_all:
 
             # OnBoard
             elif (Location_first in On_Board) and (Location_second in Empty):
-                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
+                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
             elif (Location_first in On_Board) and (Location_second in Consignment_Stock):
-                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
+                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
             elif (Location_first in On_Board) and (Location_second in Technician):
-                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
+                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
             elif (Location_first in On_Board) and (Location_second in Sub):
                 if Location_second == "5RDD" or Location_second == "5TDD":
                     result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
                 else:
                     result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
             elif (Location_first in On_Board) and (Location_second in Main):
-                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
+                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
             elif (Location_first in On_Board) and (Location_second in On_Board):
                 continue
             elif (Location_first in On_Board) and (Location_second in Returned_Machines):
-                result = Location_Country(Location_first, Location_second, Location_df, In_Transit_Code)
+                result = str(Location_first+";"+Location_second+";"+In_Transit_Code+";;;DAP;99;DAP;3;\n")
 
             # Return Machine
             elif (Location_first in Returned_Machines) and (Location_second in Empty):
@@ -312,3 +312,28 @@ for Location_first in Location_list_all:
             output.write(result)
 
 output.close()
+
+
+Transfer_routes_df = pandas.read_csv(filepath_or_buffer=f"./Transfer_Rout_result_{update_string(Company)}", sep=";", encoding="utf_8", names=["From_Location","To_Location","In_Transit","Shipment Methond","Shipping Agent","Shipping Agent Service","Transaction Type","Trans. Specification","Transport Method","Area"])
+for row in Transfer_routes_df.iterrows():
+    row_df = pandas.Series(data=row[1])
+
+    # From Location
+    From_Location_Mask1 = Location_df["Location"] == row_df["From_Location"]
+    From_Location_Country_Series = Location_df[From_Location_Mask1]
+    From_Location_Country = From_Location_Country_Series.iloc[0]["Country"]
+
+    # To Location
+    To_Location_Mask1 = Location_df["Location"] == row_df["To_Location"]
+    To_Location_Country_Series = Location_df[To_Location_Mask1]
+    To_Location_Country = To_Location_Country_Series.iloc[0]["Country"]
+
+    #Example of 
+    if (From_Location_Country == "LT") and ((To_Location_Country == "LV") or (To_Location_Country == "EE")):
+        Transfer_routes_df.at[row[0],"Transaction Type"] = "99"
+        Transfer_routes_df.at[row[0],"Trans. Specification"] = "DAP"
+        Transfer_routes_df.at[row[0],"Transport Method"] = "3"
+    else:
+        pass
+
+Transfer_routes_df.to_csv(path_or_buf=f"./Transfer_Rout_result_{update_string(Company)}", sep=";", index=False, header=False)
