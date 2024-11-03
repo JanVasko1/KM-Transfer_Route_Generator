@@ -10,7 +10,8 @@ def update_string(inset_value):
         return inset_value
 
 File_path = os.path.dirname(os.path.abspath(__file__))
-output = open(f"{File_path}/Transfer_Rout_result", "wt", encoding="utf-8", errors='ignore')  
+Output_name = input(f"Write name of output file: ")
+output = open(f"{File_path}/Export/{Output_name}", "wt", encoding="utf-8", errors='ignore')  
 
 
 #--------------------------------------------------------------------Downloader--------------------------------------------------------------------#
