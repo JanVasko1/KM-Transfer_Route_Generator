@@ -25,7 +25,7 @@ This program was developed because of an need to create Transfer Routs during mi
 - downloads all Locations Codes and Location type to enable logic inside
 
 ### <span style="color:blue;">Read .csv files</span>
-- addtional infromation which cannot be downloaded from NAV are maintained in .csv files
+- addtional infromation which cannot be downloaded from NAV are maintained in .csv files [Link](https://github.com/JanVasko1/KM-Transfer_Route_Generator/tree/master/Lib/Defaults)
     1. Shipping Agent
     2. Shipping Agent Services
     3. Shipment Methods
