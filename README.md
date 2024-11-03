@@ -9,6 +9,7 @@ This program was developed because of an need to create Transfer Routs during mi
 2. Run `Installation_libs.ps1` code (reflect correct path to your python installation)
 3. Update `HQ_Data_Generator.bat` to reflect correct path to your python installation
 
+# Operation
 ### <span style="color:blue;">Process</span></span>
 ![Process](https://github.com/JanVasko1/KM-Transfer_Route_Generator/blob/master/Lib/Readme/HQ_Test_Examples_Generator_Map.png?raw=true
  "Overal process")
@@ -23,4 +24,14 @@ This program was developed because of an need to create Transfer Routs during mi
     --> as these entity fully describe pure data source
 - downloads all Locations Codes and Location type to enable logic inside
 
-# 
+### <span style="color:blue;">Read .csv files</span>
+- addtional infromation which cannot be downloaded from NAV are maintained in .csv files
+    1. Shipping Agent
+    2. Shipping Agent Services
+    3. Shipment Methods
+
+### <span style="color:blue;">Main function</span>
+- creates and full combination of all location and map it according to .csv files 
+
+### <span style="color:blue;">Export</span>
+- program will exports data to .csv file and prints it
