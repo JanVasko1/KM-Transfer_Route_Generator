@@ -20,3 +20,7 @@ This program was developed because of an need to create Transfer Routs during mi
 - there is an need to select
     1. NOC 
     2. Company
+    --> as these entity fully describe pure data source
+- downloads all Locations Codes and Location type to enable logic inside
+
+# 
