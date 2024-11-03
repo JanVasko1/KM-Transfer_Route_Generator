@@ -10,8 +10,13 @@ This program was developed because of an need to create Transfer Routs during mi
 3. Update `HQ_Data_Generator.bat` to reflect correct path to your python installation
 
 ### <span style="color:blue;">Process</span></span>
-![Process](https://github.com/JanVasko1/KM-Calendar_Reading/blob/main/images/Process.png?raw=true
+![Process](https://github.com/JanVasko1/KM-Transfer_Route_Generator/blob/master/Lib/Readme/HQ_Test_Examples_Generator_Map.png?raw=true
  "Overal process")
 
 - red --> manual steps
 - green --> automatic steps
+
+### <span style="color:blue;">Dowloader</span>
+- there is an need to select
+    1. NOC 
+    2. Company
